@@ -35,7 +35,8 @@ func _ready() -> void:
 	
 	for chara in characters.get_children():
 		turn_queue.push_back(chara)
-	turn_queue.sort_custom(func(a, b): return a.entity.spd < b.entity.spd)
+	turn_queue.sort_custom(func(a, b): return a.entity.spd > b.entity.spd)
+	
 
 func _process(delta: float) -> void:
 	if state == 0:
@@ -58,8 +59,6 @@ func _process(delta: float) -> void:
 
 func load_ui(character):
 	'''Loads all information based on the current to-move character.'''
-	if state == prev_state:
-		return
 		
 	char_name.text = character.entity.name
 	
@@ -75,7 +74,7 @@ func load_ui(character):
 	def_ui.text = "Def: %s" % character.entity.def
 	spd_ui.text = "Spd: %s" % character.entity.spd
 	
-	assert(len(character.actions) >= action_btns.get_child_count())
+	assert(len(character.actions) <= action_btns.get_child_count())
 	for i in range(len(character.actions)):
 		action_btns.get_child(i).text = character.actions[i].name
 

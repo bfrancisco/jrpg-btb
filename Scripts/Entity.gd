@@ -9,8 +9,8 @@ const MAX_HP: int = 100
 
 # Stats
 var hp: int
-var charge: int
-var max_charge: int
+var charge: int = 0
+var max_charge: int = 0
 var spd: int
 var atk: int
 var def: int
