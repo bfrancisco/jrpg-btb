@@ -1,0 +1,327 @@
+[gd_scene load_steps=13 format=3 uid="uid://c5rkid51cyum6"]
+
+[ext_resource type="Texture2D" uid="uid://c46o2m3rlyvva" path="res://Assets/Background.png" id="1_ulpqv"]
+[ext_resource type="Script" path="res://Scripts/battle_handler.gd" id="1_ytr4m"]
+[ext_resource type="FontFile" uid="uid://cvt31vnvp6rd5" path="res://Assets/dpcomic.ttf" id="2_t1lv0"]
+[ext_resource type="Texture2D" uid="uid://8ftghpba0ts8" path="res://Assets/Domino.png" id="4_4j7x3"]
+[ext_resource type="Script" path="res://domino.gd" id="4_amn8n"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_n5gpe"]
+atlas = ExtResource("4_4j7x3")
+region = Rect2(192, 0, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_80a8s"]
+atlas = ExtResource("4_4j7x3")
+region = Rect2(64, 128, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_na0v5"]
+atlas = ExtResource("4_4j7x3")
+region = Rect2(128, 128, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_102bq"]
+atlas = ExtResource("4_4j7x3")
+region = Rect2(0, 0, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_u16af"]
+atlas = ExtResource("4_4j7x3")
+region = Rect2(64, 0, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_xsld6"]
+atlas = ExtResource("4_4j7x3")
+region = Rect2(128, 0, 64, 64)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_shcxw"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_n5gpe")
+}],
+"loop": false,
+"name": &"attack",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_80a8s")
+}],
+"loop": false,
+"name": &"block",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_na0v5")
+}],
+"loop": false,
+"name": &"hurt",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 3.0,
+"texture": SubResource("AtlasTexture_102bq")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_u16af")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_xsld6")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_u16af")
+}],
+"loop": true,
+"name": &"idle",
+"speed": 5.0
+}]
+
+[node name="Main" type="Node2D"]
+
+[node name="BattleHandler" type="Node2D" parent="."]
+position = Vector2(576, 237)
+scale = Vector2(1.65781, 1.85156)
+script = ExtResource("1_ytr4m")
+
+[node name="UI" type="PanelContainer" parent="."]
+offset_top = 447.0
+offset_right = 1152.0
+offset_bottom = 647.0
+
+[node name="MarginContainer" type="MarginContainer" parent="UI"]
+layout_mode = 2
+theme_override_constants/margin_left = 25
+theme_override_constants/margin_top = 25
+theme_override_constants/margin_right = 25
+theme_override_constants/margin_bottom = 25
+
+[node name="HBoxContainer" type="HBoxContainer" parent="UI/MarginContainer"]
+layout_mode = 2
+theme_override_constants/separation = 30
+
+[node name="Stats" type="VBoxContainer" parent="UI/MarginContainer/HBoxContainer"]
+custom_minimum_size = Vector2(294, 0)
+layout_mode = 2
+theme_override_constants/separation = 5
+
+[node name="Char Name" type="RichTextLabel" parent="UI/MarginContainer/HBoxContainer/Stats"]
+layout_mode = 2
+theme_override_colors/default_color = Color(0.85, 0.85, 0.85, 1)
+theme_override_fonts/normal_font = ExtResource("2_t1lv0")
+theme_override_font_sizes/normal_font_size = 32
+text = "Alice"
+fit_content = true
+scroll_active = false
+
+[node name="HP Bar" type="ProgressBar" parent="UI/MarginContainer/HBoxContainer/Stats"]
+custom_minimum_size = Vector2(234, 25)
+layout_mode = 2
+step = 1.0
+value = 100.0
+show_percentage = false
+
+[node name="Label" type="Label" parent="UI/MarginContainer/HBoxContainer/Stats/HP Bar"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_fonts/font = ExtResource("2_t1lv0")
+theme_override_font_sizes/font_size = 20
+text = "100/100"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Charge Bar" type="ProgressBar" parent="UI/MarginContainer/HBoxContainer/Stats"]
+custom_minimum_size = Vector2(234, 25)
+layout_mode = 2
+step = 1.0
+value = 100.0
+show_percentage = false
+
+[node name="Label2" type="Label" parent="UI/MarginContainer/HBoxContainer/Stats/Charge Bar"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_fonts/font = ExtResource("2_t1lv0")
+theme_override_font_sizes/font_size = 20
+text = "100/100"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="HSeparator" type="HSeparator" parent="UI/MarginContainer/HBoxContainer/Stats"]
+layout_mode = 2
+
+[node name="Main Stats" type="HBoxContainer" parent="UI/MarginContainer/HBoxContainer/Stats"]
+layout_mode = 2
+
+[node name="Atk" type="RichTextLabel" parent="UI/MarginContainer/HBoxContainer/Stats/Main Stats"]
+custom_minimum_size = Vector2(96, 0)
+layout_mode = 2
+theme_override_colors/default_color = Color(0.85, 0.85, 0.85, 1)
+theme_override_fonts/normal_font = ExtResource("2_t1lv0")
+theme_override_font_sizes/normal_font_size = 22
+text = "Atk: "
+fit_content = true
+scroll_active = false
+
+[node name="Def" type="RichTextLabel" parent="UI/MarginContainer/HBoxContainer/Stats/Main Stats"]
+custom_minimum_size = Vector2(96, 0)
+layout_mode = 2
+theme_override_colors/default_color = Color(0.85, 0.85, 0.85, 1)
+theme_override_fonts/normal_font = ExtResource("2_t1lv0")
+theme_override_font_sizes/normal_font_size = 22
+text = "Def:"
+fit_content = true
+scroll_active = false
+
+[node name="Spd" type="RichTextLabel" parent="UI/MarginContainer/HBoxContainer/Stats/Main Stats"]
+custom_minimum_size = Vector2(96, 0)
+layout_mode = 2
+theme_override_colors/default_color = Color(0.85, 0.85, 0.85, 1)
+theme_override_fonts/normal_font = ExtResource("2_t1lv0")
+theme_override_font_sizes/normal_font_size = 22
+text = "Spd:"
+fit_content = true
+scroll_active = false
+
+[node name="Actions_Enemies" type="HBoxContainer" parent="UI/MarginContainer/HBoxContainer"]
+custom_minimum_size = Vector2(451, 0)
+layout_mode = 2
+theme_override_constants/separation = 20
+
+[node name="Actions" type="VBoxContainer" parent="UI/MarginContainer/HBoxContainer/Actions_Enemies"]
+custom_minimum_size = Vector2(215, 0)
+layout_mode = 2
+
+[node name="Label" type="RichTextLabel" parent="UI/MarginContainer/HBoxContainer/Actions_Enemies/Actions"]
+layout_mode = 2
+theme_override_colors/default_color = Color(0.85, 0.85, 0.85, 1)
+theme_override_fonts/normal_font = ExtResource("2_t1lv0")
+theme_override_font_sizes/normal_font_size = 26
+bbcode_enabled = true
+text = "[center]Actions[/center]"
+fit_content = true
+scroll_active = false
+
+[node name="HSeparator" type="HSeparator" parent="UI/MarginContainer/HBoxContainer/Actions_Enemies/Actions"]
+layout_mode = 2
+
+[node name="Action Btns" type="Node2D" parent="UI/MarginContainer/HBoxContainer/Actions_Enemies/Actions"]
+
+[node name="Action 1" type="Button" parent="UI/MarginContainer/HBoxContainer/Actions_Enemies/Actions/Action Btns"]
+offset_top = 37.0
+offset_right = 215.0
+offset_bottom = 70.0
+theme_override_fonts/font = ExtResource("2_t1lv0")
+theme_override_font_sizes/font_size = 26
+toggle_mode = true
+text = "Action 1"
+
+[node name="Action 2" type="Button" parent="UI/MarginContainer/HBoxContainer/Actions_Enemies/Actions/Action Btns"]
+offset_top = 74.0
+offset_right = 215.0
+offset_bottom = 107.0
+theme_override_fonts/font = ExtResource("2_t1lv0")
+theme_override_font_sizes/font_size = 26
+toggle_mode = true
+text = "Action 2"
+
+[node name="Action 3" type="Button" parent="UI/MarginContainer/HBoxContainer/Actions_Enemies/Actions/Action Btns"]
+offset_top = 111.0
+offset_right = 215.0
+offset_bottom = 144.0
+theme_override_fonts/font = ExtResource("2_t1lv0")
+theme_override_font_sizes/font_size = 26
+toggle_mode = true
+text = "Action 3"
+
+[node name="Select" type="VBoxContainer" parent="UI/MarginContainer/HBoxContainer/Actions_Enemies"]
+custom_minimum_size = Vector2(215, 0)
+layout_mode = 2
+
+[node name="Label" type="RichTextLabel" parent="UI/MarginContainer/HBoxContainer/Actions_Enemies/Select"]
+layout_mode = 2
+theme_override_colors/default_color = Color(0.85, 0.85, 0.85, 1)
+theme_override_fonts/normal_font = ExtResource("2_t1lv0")
+theme_override_font_sizes/normal_font_size = 26
+bbcode_enabled = true
+text = "[center]Selection[/center]"
+fit_content = true
+scroll_active = false
+
+[node name="HSeparator" type="HSeparator" parent="UI/MarginContainer/HBoxContainer/Actions_Enemies/Select"]
+layout_mode = 2
+
+[node name="Select Btns" type="Node2D" parent="UI/MarginContainer/HBoxContainer/Actions_Enemies/Select"]
+
+[node name="Select 1" type="Button" parent="UI/MarginContainer/HBoxContainer/Actions_Enemies/Select/Select Btns"]
+visible = false
+offset_top = 37.0
+offset_right = 215.0
+offset_bottom = 70.0
+theme_override_fonts/font = ExtResource("2_t1lv0")
+theme_override_font_sizes/font_size = 26
+toggle_mode = true
+text = "Select 1"
+
+[node name="Select 2" type="Button" parent="UI/MarginContainer/HBoxContainer/Actions_Enemies/Select/Select Btns"]
+visible = false
+offset_top = 74.0
+offset_right = 215.0
+offset_bottom = 107.0
+theme_override_fonts/font = ExtResource("2_t1lv0")
+theme_override_font_sizes/font_size = 26
+toggle_mode = true
+text = "Select 2"
+
+[node name="Select 3" type="Button" parent="UI/MarginContainer/HBoxContainer/Actions_Enemies/Select/Select Btns"]
+visible = false
+offset_top = 111.0
+offset_right = 215.0
+offset_bottom = 144.0
+theme_override_fonts/font = ExtResource("2_t1lv0")
+theme_override_font_sizes/font_size = 26
+toggle_mode = true
+text = "Select 3"
+
+[node name="Description" type="VBoxContainer" parent="UI/MarginContainer/HBoxContainer"]
+custom_minimum_size = Vector2(294, 0)
+layout_mode = 2
+theme_override_constants/separation = 10
+
+[node name="Game Event" type="RichTextLabel" parent="UI/MarginContainer/HBoxContainer/Description"]
+layout_mode = 2
+theme_override_colors/default_color = Color(0.85, 0.85, 0.85, 1)
+theme_override_fonts/normal_font = ExtResource("2_t1lv0")
+theme_override_font_sizes/normal_font_size = 26
+text = "Alice attacks Guo! It's super effective! Rahhh!"
+fit_content = true
+scroll_active = false
+
+[node name="BGColor" type="Sprite2D" parent="."]
+self_modulate = Color(0.61, 0.5917, 0.61, 1)
+z_index = -1
+position = Vector2(576, 237)
+scale = Vector2(1.65781, 1.85156)
+texture = ExtResource("1_ulpqv")
+
+[node name="Entities" type="Node2D" parent="."]
+
+[node name="Domino" type="Node2D" parent="Entities"]
+script = ExtResource("4_amn8n")
+
+[node name="AnimSprite" type="AnimatedSprite2D" parent="Entities/Domino"]
+position = Vector2(415, 330)
+scale = Vector2(-1.5, 1.5)
+sprite_frames = SubResource("SpriteFrames_shcxw")
+animation = &"idle"
+
+[connection signal="toggled" from="UI/MarginContainer/HBoxContainer/Actions_Enemies/Actions/Action Btns/Action 1" to="BattleHandler" method="_on_action_1_toggled"]
+[connection signal="toggled" from="UI/MarginContainer/HBoxContainer/Actions_Enemies/Actions/Action Btns/Action 2" to="BattleHandler" method="_on_action_2_toggled"]
+[connection signal="toggled" from="UI/MarginContainer/HBoxContainer/Actions_Enemies/Actions/Action Btns/Action 3" to="BattleHandler" method="_on_action_3_toggled"]
+[connection signal="toggled" from="UI/MarginContainer/HBoxContainer/Actions_Enemies/Select/Select Btns/Select 1" to="BattleHandler" method="_on_select_1_toggled"]
+[connection signal="toggled" from="UI/MarginContainer/HBoxContainer/Actions_Enemies/Select/Select Btns/Select 2" to="BattleHandler" method="_on_select_2_toggled"]
+[connection signal="toggled" from="UI/MarginContainer/HBoxContainer/Actions_Enemies/Select/Select Btns/Select 3" to="BattleHandler" method="_on_select_3_toggled"]
