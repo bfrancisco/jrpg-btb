@@ -11,6 +11,7 @@ func _ready() -> void:
 	
 	# Stats
 	entity.hp = 100
+	entity.max_hp = 100
 	entity.charge = 2
 	entity.max_charge = 3
 	entity.spd = 15

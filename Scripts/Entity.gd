@@ -5,10 +5,9 @@ var name: String
 var sprite: AnimatedSprite2D # source file
 var side: int # 0: Ally, 1: Enemy
 
-const MAX_HP: int = 100
-
 # Stats
 var hp: int
+var max_hp: int
 var charge: int = 0
 var max_charge: int = 0
 var spd: int

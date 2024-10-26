@@ -62,11 +62,11 @@ func load_ui(character):
 		
 	char_name.text = character.entity.name
 	
-	hp_bar.max_value = character.entity.MAX_HP
+	hp_bar.max_value = max(1, character.entity.max_hp)
 	hp_bar.value = character.entity.hp
-	hp_bar.get_child(0).text = "%s/%s" % [character.entity.hp, character.entity.MAX_HP]
+	hp_bar.get_child(0).text = "%s/%s" % [character.entity.hp, character.entity.max_hp]
 	
-	charge_bar.max_value = character.entity.max_charge
+	charge_bar.max_value = max(1, character.entity.max_charge)
 	charge_bar.value = character.entity.charge
 	charge_bar.get_child(0).text = "%s/%s" % [character.entity.charge, character.entity.max_charge]
 	
@@ -144,22 +144,43 @@ func apply_selected_action(receiver_name):
 	Executed when a select button is pressed.
 	Increments qi / turn mover function.
 	'''
-	if selected_action.target == 1: # individual enemy
-		for chara in characters.get_children():
-			if chara.entity.side == 1 and chara.entity.name == receiver_name:
-				chara.entity.take_damage(turn_queue[qi].entity.atk)
-				break
 	
-	elif selected_action.target == 2: # block
-		turn_queue[qi].entity.do_block()
+	# ally attacking
+	if turn_queue[qi].entity.side == 0:
+		if selected_action.target == 1: # individual enemy
+			for chara in characters.get_children():
+				if chara.entity.side == 1 and chara.entity.name == receiver_name:
+					chara.entity.take_damage(turn_queue[qi].entity.atk)
+					break
 	
-	# TO DO: target == 0 and target == 3
+		elif selected_action.target == 2: # block
+			turn_queue[qi].entity.do_block()
+	
+		# TO DO: target == 0 and target == 3
+	
+	# enemy attacking
+	elif turn_queue[qi].entity.side == 1:
+		if selected_action.target == 0: # individual enemy
+			for chara in characters.get_children():
+				if chara.entity.side == 0 and chara.entity.name == receiver_name:
+					chara.entity.take_damage(turn_queue[qi].entity.atk)
+					break
+	
+		elif selected_action.target == 2: # block
+			turn_queue[qi].entity.do_block()
+	
+	for btn in action_btns.get_children():
+		btn.button_pressed = false
+	for btn in select_btns.get_children():
+		btn.button_pressed = false
+		btn.visible = false
 	
 	qi = (qi + 1) % len(turn_queue)
+	
 
 func _on_select_1_toggled(toggled_on: bool) -> void:
 	if toggled_on:
-		var btn_emitter = $"../UI/MarginContainer/HBoxContainer/Actions_Enemies/Actions/Action Btns/Action 3"
+		var btn_emitter = $"../UI/MarginContainer/HBoxContainer/Actions_Enemies/Select/Select Btns/Select 1"
 		var receiver_name = btn_emitter.text
 		apply_selected_action(receiver_name)
 
