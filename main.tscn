@@ -401,7 +401,7 @@ script = ExtResource("4_amn8n")
 position = Vector2(415, 330)
 scale = Vector2(-1.5, 1.5)
 sprite_frames = SubResource("SpriteFrames_shcxw")
-animation = &"block"
+animation = &"attack"
 
 [node name="Skeleton" type="Node2D" parent="Entities"]
 script = ExtResource("6_cmjdo")
@@ -411,6 +411,8 @@ position = Vector2(793, 333)
 scale = Vector2(1.5, 1.5)
 sprite_frames = SubResource("SpriteFrames_7804i")
 animation = &"attack"
+frame = 1
+frame_progress = 1.0
 
 [connection signal="toggled" from="UI/MarginContainer/HBoxContainer/Actions_Enemies/Actions/Action Btns/Action 1" to="BattleHandler" method="_on_action_1_toggled"]
 [connection signal="toggled" from="UI/MarginContainer/HBoxContainer/Actions_Enemies/Actions/Action Btns/Action 2" to="BattleHandler" method="_on_action_2_toggled"]

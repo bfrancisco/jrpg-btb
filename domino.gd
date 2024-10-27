@@ -17,6 +17,7 @@ func _ready() -> void:
 	entity.spd = 15
 	entity.atk = 10
 	entity.def = 3
+	entity.atk_range = 160
 	
 	# Actions
 	var atk_action = Action.new()

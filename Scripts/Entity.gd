@@ -13,6 +13,7 @@ var max_charge: int = 0
 var spd: int
 var atk: int
 var def: int
+var atk_range: int = 80
 
 var is_blocking: bool = false
 
@@ -41,5 +42,4 @@ func taken_down() -> void:
 	
 func is_dead() -> bool:
 	return (hp == 0)
-	
 	

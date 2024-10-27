@@ -2,6 +2,7 @@ extends Node2D
 
 
 const ALL_ENEMIES_STR = "All Enemies"
+const ANIM_SPD: float = 6.0
 
 @onready var characters: Node2D = $"../Entities"
 # UI elements
@@ -20,12 +21,16 @@ var state: int
 var debug_state = {
 	0 : "Waiting for input",
 	1 : "Character animation",
-	2 : "Win",
-	3 : "Lose",
+	2 : "Character going back to their place",
+	3 : "Win",
+	4 : "Lose",
 }
 var turn_queue: Array
-var qi: int # pointer/index for turn_queue
+var qi: int # index for turn_queue; char to move
+var ri: int # index for turn_queue; char to receive action
 var selected_action: Action
+var target_position: Vector2 # for character movement animation
+var orig_position: Vector2 # initial position of character that just moved
 
 func _ready() -> void:
 	state = 0
@@ -37,18 +42,45 @@ func _ready() -> void:
 	turn_queue.sort_custom(func(a, b): return a.entity.spd > b.entity.spd)
 	
 
-func _process(delta: float) -> void:
+func _physics_process(delta: float) -> void:
+	if prev_state != state:
+		print(debug_state[state])
+	
+	#print(state, qi)
 	if state == 0:
+		# TO DO: check if win/lose
 		load_ui(turn_queue[qi])
 		turn_queue[qi].entity.do_idle()
 		
 	elif state == 1:
-		pass
+		var dx = abs(turn_queue[qi].entity.sprite.position.x - target_position.x)
+		var dy = abs(turn_queue[qi].entity.sprite.position.y - target_position.y)
+		if dx >= 1 or dy >= 1:
+			#print(turn_queue[qi].entity.sprite.position)
+			#print(target_position)
+			turn_queue[qi].entity.sprite.position = lerp(turn_queue[qi].entity.sprite.position, target_position, delta * ANIM_SPD)
+		else:
+			turn_queue[qi].entity.sprite.position = target_position
+			apply_action()
+			state = 2
+			
 	
 	elif state == 2:
+		var dx = abs(turn_queue[qi].entity.sprite.position.x - orig_position.x)
+		var dy = abs(turn_queue[qi].entity.sprite.position.y - orig_position.y)
+		if dx >= 1 or dy >= 1:
+			turn_queue[qi].entity.sprite.position = lerp(turn_queue[qi].entity.sprite.position, orig_position, delta * ANIM_SPD)
+		else:
+			turn_queue[qi].entity.sprite.position = orig_position
+			
+			qi = (qi + 1) % len(turn_queue)
+			
+			state = 0
+		
+	elif state == 3:
 		show_win()
 	
-	elif state == 3:
+	elif state == 4:
 		show_lose()
 	
 	prev_state = state
@@ -143,37 +175,28 @@ func _on_action_3_toggled(toggled_on: bool) -> void:
 		var btn_index = 2
 		handle_action_btns(btn_emitter, btn_index)
 
-func apply_action(receiver_i):
+func apply_action():
 	'''
 	Applies effects of an action.
-	qi = doer | receiver_i = receiver | selected_action = action
+	qi = doer | ri = receiver | selected_action = action
 	'''
-	# If will block
-	if qi == receiver_i or selected_action.target == 2:
-		turn_queue[qi].entity.do_block()
-		return
 	
+	# If will block
+	if qi == ri or selected_action.target == 2:
+		turn_queue[qi].entity.do_block()
 	
 	# If attacks an individial enemy | on opposite sides
-	if turn_queue[qi].entity.side ^ turn_queue[receiver_i].entity.side:
+	elif turn_queue[qi].entity.side ^ turn_queue[ri].entity.side:
 		turn_queue[qi].entity.do_attack()
-		turn_queue[receiver_i].entity.take_damage(turn_queue[qi].entity.atk)
+		turn_queue[ri].entity.take_damage(turn_queue[qi].entity.atk)
 		
 
 func handle_select_btns(receiver_name):
 	'''
 	Executed when a select button is pressed.
-	Increments qi / turn mover function.
+	Turns state 0 -> 1
 	'''
-	var receiver_i = -1
-	for i in range(len(turn_queue)):
-		if turn_queue[i].entity.name == receiver_name:
-			receiver_i = i
-			break
-	assert(receiver_i != -1)
-	
-	apply_action(receiver_i)
-	
+	# Disable buttons for the next character move
 	for btn in action_btns.get_children():
 		btn.button_pressed = false
 		btn.visible = false
@@ -181,7 +204,26 @@ func handle_select_btns(receiver_name):
 		btn.button_pressed = false
 		btn.visible = false
 	
-	qi = (qi + 1) % len(turn_queue)
+	# Get index of receiver of action
+	var receiver_i = -1
+	for i in range(len(turn_queue)):
+		if turn_queue[i].entity.name == receiver_name:
+			receiver_i = i
+			break
+	assert(receiver_i != -1)
+	ri = receiver_i
+	
+	# Compute for orig/target positon for character movement animation
+	orig_position = turn_queue[qi].entity.sprite.position
+	if qi == ri or selected_action.target == 2:
+		target_position = turn_queue[qi].entity.sprite.position
+	else:
+		var atk_rng = turn_queue[qi].entity.atk_range
+		var is_ally = turn_queue[ri].entity.side == 0
+		target_position.x = turn_queue[ri].entity.sprite.position.x + atk_rng * (1 if is_ally else -1)
+		target_position.y = turn_queue[ri].entity.sprite.position.y
+	
+	state = 1
 
 func _on_select_1_toggled(toggled_on: bool) -> void:
 	if toggled_on:
@@ -200,9 +242,6 @@ func _on_select_3_toggled(toggled_on: bool) -> void:
 		var btn_emitter = $"../UI/MarginContainer/HBoxContainer/Actions_Enemies/Select/Select Btns/Select 3"
 		var receiver_name = btn_emitter.text
 		handle_select_btns(receiver_name)
-
-
-
 
 func show_win() -> void:
 	pass
