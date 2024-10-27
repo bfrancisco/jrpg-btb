@@ -84,6 +84,35 @@ animations = [{
 "loop": true,
 "name": &"idle",
 "speed": 5.0
+}, {
+"frames": [{
+"duration": 0.7,
+"texture": SubResource("AtlasTexture_n5gpe")
+}, {
+"duration": 0.7,
+"texture": SubResource("AtlasTexture_c2i2c")
+}, {
+"duration": 0.7,
+"texture": SubResource("AtlasTexture_n5gpe")
+}, {
+"duration": 0.7,
+"texture": SubResource("AtlasTexture_c2i2c")
+}, {
+"duration": 0.7,
+"texture": SubResource("AtlasTexture_n5gpe")
+}, {
+"duration": 0.7,
+"texture": SubResource("AtlasTexture_c2i2c")
+}, {
+"duration": 0.7,
+"texture": SubResource("AtlasTexture_n5gpe")
+}, {
+"duration": 0.7,
+"texture": SubResource("AtlasTexture_c2i2c")
+}],
+"loop": false,
+"name": &"special",
+"speed": 5.0
 }]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_4ljig"]
@@ -545,7 +574,7 @@ script = ExtResource("4_amn8n")
 position = Vector2(415, 330)
 scale = Vector2(-1.5, 1.5)
 sprite_frames = SubResource("SpriteFrames_shcxw")
-animation = &"block"
+animation = &"special"
 
 [node name="Lorele" type="Node2D" parent="Entities"]
 script = ExtResource("6_mb37r")

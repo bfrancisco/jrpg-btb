@@ -53,3 +53,5 @@ func taken_down() -> void:
 func is_dead() -> bool:
 	return (hp == 0)
 	
+func do_special():
+	sprite.play("special")
