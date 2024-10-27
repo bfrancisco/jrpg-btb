@@ -78,11 +78,9 @@ func _physics_process(delta: float) -> void:
 			turn_queue[qi].entity.sprite.position = lerp(turn_queue[qi].entity.sprite.position, orig_position, delta * ANIM_SPD)
 		else:
 			turn_queue[qi].entity.sprite.position = orig_position
-			if not turn_queue[qi].entity.is_blocking and not turn_queue[ri].entity.is_stunned:
-				print("UNANG IF NO GANA")
+			if not turn_queue[qi].entity.is_blocking:
 				turn_queue[qi].entity.do_idle()
 			if qi != ri and not turn_queue[ri].entity.is_stunned:
-				print("SECOND IF NO GANA")
 				turn_queue[ri].entity.do_idle()
 			qi = (qi + 1) % len(turn_queue)
 			
@@ -216,10 +214,6 @@ func apply_action():
 	elif turn_queue[qi].entity.side ^ turn_queue[ri].entity.side:
 		turn_queue[qi].entity.do_attack()
 		turn_queue[ri].entity.take_damage(turn_queue[qi].entity.atk)
-		
-	# update charge
-	turn_queue[qi].entity.update_charge(selected_action.charge_gain)
-	turn_queue[qi].entity.update_charge(-selected_action.charge_cost)
 		
 	# update charge
 	turn_queue[qi].entity.update_charge(selected_action.charge_gain)
