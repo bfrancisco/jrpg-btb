@@ -39,6 +39,10 @@ func take_damage(dmg: int) -> void:
 	
 	if hp <= 0:
 		taken_down()
+	
+func get_healed() -> void:
+	hp = min(hp + 20, max_hp) # limit healing accd. to max hp of receiver
+	
 
 func do_block():
 	is_blocking = true

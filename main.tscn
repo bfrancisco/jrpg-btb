@@ -283,7 +283,7 @@ animations = [{
 "texture": SubResource("AtlasTexture_2kj55")
 }],
 "loop": true,
-"name": &"idle",
+"name": &"special",
 "speed": 5.0
 }]
 
@@ -438,11 +438,6 @@ animations = [{
 }]
 
 [node name="Main" type="Node2D"]
-
-[node name="BattleHandler" type="Node2D" parent="."]
-position = Vector2(576, 237)
-scale = Vector2(1.65781, 1.85156)
-script = ExtResource("1_ytr4m")
 
 [node name="UI" type="PanelContainer" parent="."]
 offset_top = 447.0
@@ -700,8 +695,7 @@ script = ExtResource("8_obrhe")
 position = Vector2(345, 324)
 scale = Vector2(-1.5, 1.5)
 sprite_frames = SubResource("SpriteFrames_orukb")
-animation = &"idle"
-frame_progress = 0.0591992
+animation = &"special"
 
 [node name="Skeleton" type="Node2D" parent="Entities"]
 script = ExtResource("6_cmjdo")
@@ -722,6 +716,11 @@ scale = Vector2(1.5, 1.5)
 sprite_frames = SubResource("SpriteFrames_wxhxg")
 animation = &"idle"
 frame_progress = 0.533257
+
+[node name="BattleHandler" type="Node2D" parent="."]
+position = Vector2(576, 237)
+scale = Vector2(1.65781, 1.85156)
+script = ExtResource("1_ytr4m")
 
 [connection signal="toggled" from="UI/MarginContainer/HBoxContainer/Actions_Enemies/Actions/Action Btns/Action 1" to="BattleHandler" method="_on_action_1_toggled"]
 [connection signal="toggled" from="UI/MarginContainer/HBoxContainer/Actions_Enemies/Actions/Action Btns/Action 2" to="BattleHandler" method="_on_action_2_toggled"]

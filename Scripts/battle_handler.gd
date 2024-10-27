@@ -2,6 +2,7 @@ extends Node2D
 
 
 const ALL_ENEMIES_STR = "All Enemies"
+const ALL_ALLIES_STR = "All Allies"
 const ANIM_SPD: float = 6.0
 
 @onready var characters: Node2D = $"../Entities"
@@ -46,11 +47,10 @@ func _ready() -> void:
 	turn_queue.sort_custom(func(a, b): return a.entity.spd > b.entity.spd)
 	
 	for chara in turn_queue:
-		if chara.side == 0:
+		if chara.entity.side == 0:
 			allies +=1
 		else:
 			enemies +=1
-	
 
 func _physics_process(delta: float) -> void:
 	if prev_state != state:
@@ -92,7 +92,7 @@ func _physics_process(delta: float) -> void:
 			turn_queue[qi].entity.sprite.position = orig_position
 			if not turn_queue[qi].entity.is_blocking:
 				turn_queue[qi].entity.do_idle()
-			if qi != ri and not turn_queue[ri].entity.is_stunned:
+			if qi != ri or not turn_queue[ri].entity.is_stunned:
 				turn_queue[ri].entity.do_idle()
 			qi = (qi + 1) % len(turn_queue)
 			
@@ -172,7 +172,7 @@ func show_selection(action):
 		if action.target == 2:
 			select_btns.get_child(0).text = cur_chara.entity.name
 		elif action.target == 3:
-			select_btns.get_child(0).text = ALL_ENEMIES_STR
+			select_btns.get_child(0).text = ALL_ALLIES_STR
 		var btn_i = 1
 		while btn_i < select_btns.get_child_count():
 			select_btns.get_child(btn_i).visible = false
@@ -227,7 +227,13 @@ func apply_action():
 		var hits = turn_queue[qi].entity.rng.randi_range(1, 5)
 		turn_queue[qi].entity.do_special()
 		turn_queue[ri].entity.take_damage(turn_queue[qi].entity.atk * hits)
-	
+		
+	elif selected_action.name == "Healing Light":
+		turn_queue[qi].entity.do_special()
+		for x in characters.get_children():
+			if x.entity.side == 0 and x.entity.alive:
+				x.entity.get_healed()
+				
 	# If attacks an individial enemy | on opposite sides
 	elif turn_queue[qi].entity.side ^ turn_queue[ri].entity.side:
 		game_event.text = str(turn_queue[qi].entity.name, ' used ', selected_action.name, ' on ', turn_queue[ri].entity.name)
@@ -257,12 +263,12 @@ func handle_select_btns(receiver_name):
 		if turn_queue[i].entity.name == receiver_name:
 			receiver_i = i
 			break
-	assert(receiver_i != -1)
+	#assert(receiver_i != -1) if ri = 0, all enemies or all allies yung target
 	ri = receiver_i
 	
 	# Compute for orig/target positon for character movement animation
 	orig_position = turn_queue[qi].entity.sprite.position
-	if qi == ri or selected_action.target == 2:
+	if qi == ri or selected_action.target == 2 or ri == -1:
 		target_position = turn_queue[qi].entity.sprite.position
 	else:
 		var atk_rng = turn_queue[qi].entity.atk_range
