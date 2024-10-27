@@ -165,14 +165,24 @@ func show_selection(action):
 		while btn_i < select_btns.get_child_count():
 			select_btns.get_child(btn_i).visible = false
 			btn_i += 1
-	
-	elif 2 <= action.target and action.target <= 3: # target self or all enemies
-		var cur_chara = turn_queue[qi]
+	elif action.target == 2:
 		select_btns.get_child(0).visible = true
-		if action.target == 2:
-			select_btns.get_child(0).text = cur_chara.entity.name
-		elif action.target == 3:
-			select_btns.get_child(0).text = ALL_ALLIES_STR
+		select_btns.get_child(0).text = turn_queue[qi].entity.name
+		for i in range(1, select_btns.get_child_count()):
+			select_btns.get_child(i).visible = false
+
+	elif action.target == 3:
+		select_btns.get_child(0).visible = true
+		select_btns.get_child(0).text = ALL_ALLIES_STR
+		for i in range(1, select_btns.get_child_count()):
+			select_btns.get_child(i).visible = false
+			
+	elif action.target == 4:  # All enemies
+		select_btns.get_child(0).visible = true
+		select_btns.get_child(0).text = ALL_ENEMIES_STR
+		for i in range(1, select_btns.get_child_count()):
+			select_btns.get_child(i).visible = false
+			
 		var btn_i = 1
 		while btn_i < select_btns.get_child_count():
 			select_btns.get_child(btn_i).visible = false
@@ -233,6 +243,12 @@ func apply_action():
 		for x in characters.get_children():
 			if x.entity.side == 0 and x.entity.alive:
 				x.entity.get_healed()
+	
+	elif selected_action.name == "Flame Breath":
+		turn_queue[qi].entity.do_special()
+		for x in characters.get_children():
+			if x.entity.side == 0 and x.entity.alive:
+				x.entity.take_damage(turn_queue[qi].entity.atk)
 				
 	# If attacks an individial enemy | on opposite sides
 	elif turn_queue[qi].entity.side ^ turn_queue[ri].entity.side:
