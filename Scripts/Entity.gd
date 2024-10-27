@@ -1,5 +1,6 @@
 class_name Entity
 
+
 # Info
 var name: String
 var sprite: AnimatedSprite2D # source file
@@ -20,10 +21,12 @@ var is_blocking: bool = false
 var is_stunned: bool = false
 
 var rng = RandomNumberGenerator.new()
+var alive: bool = true
 
 # Functions
 func do_idle():
-	sprite.play("idle")
+	if alive:
+		sprite.play("idle")
 	is_blocking = false
 
 func take_damage(dmg: int) -> void:
@@ -34,7 +37,7 @@ func take_damage(dmg: int) -> void:
 	hp = max(hp - received_dmg, 0)
 	sprite.play("hurt")
 	
-	if hp == 0:
+	if hp <= 0:
 		taken_down()
 
 func do_block():
@@ -49,7 +52,8 @@ func update_charge(to_add):
 	charge = min(charge + to_add, max_charge)
 
 func taken_down() -> void:
-	sprite.play("dead")
+	alive = false
+	sprite.play("hurt")
 	
 func is_dead() -> bool:
 	return (hp == 0)
