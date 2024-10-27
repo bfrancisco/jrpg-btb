@@ -1,0 +1,18 @@
+[gd_scene load_steps=3 format=3 uid="uid://dntp2a5yledw"]
+
+[ext_resource type="Script" path="res://game_over.gd" id="1_agage"]
+[ext_resource type="FontFile" uid="uid://cvt31vnvp6rd5" path="res://Assets/dpcomic.ttf" id="2_0rgil"]
+
+[node name="Node2D" type="Node2D"]
+script = ExtResource("1_agage")
+
+[node name="ColorRect" type="ColorRect" parent="."]
+offset_right = 40.0
+offset_bottom = 40.0
+color = Color(0, 0, 0, 0.784314)
+
+[node name="gameover_text" type="RichTextLabel" parent="."]
+offset_right = 500.0
+offset_bottom = 200.0
+theme_override_fonts/normal_font = ExtResource("2_0rgil")
+theme_override_font_sizes/normal_font_size = 140

@@ -545,7 +545,7 @@ script = ExtResource("4_amn8n")
 position = Vector2(415, 330)
 scale = Vector2(-1.5, 1.5)
 sprite_frames = SubResource("SpriteFrames_shcxw")
-animation = &"block"
+animation = &"hurt"
 
 [node name="Lorele" type="Node2D" parent="Entities"]
 script = ExtResource("6_mb37r")

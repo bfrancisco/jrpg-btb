@@ -15,6 +15,7 @@ const ANIM_SPD: float = 6.0
 @onready var action_btns: Node2D = $"../UI/MarginContainer/HBoxContainer/Actions_Enemies/Actions/Action Btns"
 @onready var select_btns: Node2D = $"../UI/MarginContainer/HBoxContainer/Actions_Enemies/Select/Select Btns"
 @onready var game_event: RichTextLabel = $"../UI/MarginContainer/HBoxContainer/Description/Game Event"
+@onready var game_over: PackedScene = load('res://game_over.tscn')
 
 var prev_state: int
 var state: int
@@ -23,7 +24,8 @@ var debug_state = {
 	1 : "Character animation",
 	2 : "Character going back to their place",
 	3 : "Win",
-	4 : "Lose",
+	4 : "Lose", 
+	5 : "Game Over"
 }
 var turn_queue: Array
 var qi: int # index for turn_queue; char to move
@@ -31,6 +33,8 @@ var ri: int # index for turn_queue; char to receive action
 var selected_action: Action
 var target_position: Vector2 # for character movement animation
 var orig_position: Vector2 # initial position of character that just moved
+var allies = 0
+var enemies = 0
 
 func _ready() -> void:
 	state = 0
@@ -41,6 +45,12 @@ func _ready() -> void:
 		turn_queue.push_back(chara)
 	turn_queue.sort_custom(func(a, b): return a.entity.spd > b.entity.spd)
 	
+	for chara in turn_queue:
+		if chara.side == 0:
+			allies +=1
+		else:
+			enemies +=1
+	
 
 func _physics_process(delta: float) -> void:
 	if prev_state != state:
@@ -48,9 +58,12 @@ func _physics_process(delta: float) -> void:
 	
 	#print(state, qi)
 	if state == 0:
-		# TO DO: check if win/lose
-		load_ui(turn_queue[qi])
-		turn_queue[qi].entity.do_idle()
+		check_parties()
+		if turn_queue[qi].entity.alive:
+			load_ui(turn_queue[qi])
+			turn_queue[qi].entity.do_idle()
+		else:
+			qi = (qi + 1) % len(turn_queue)
 		
 	elif state == 1:
 		var dx = abs(turn_queue[qi].entity.sprite.position.x - target_position.x)
@@ -60,8 +73,8 @@ func _physics_process(delta: float) -> void:
 			#print(target_position)
 			turn_queue[qi].entity.sprite.position = lerp(turn_queue[qi].entity.sprite.position, target_position, delta * ANIM_SPD)
 		else:
-			turn_queue[qi].entity.sprite.position = target_position
 			apply_action()
+			turn_queue[qi].entity.sprite.position = target_position
 			state = 2
 			
 	
@@ -79,18 +92,23 @@ func _physics_process(delta: float) -> void:
 			qi = (qi + 1) % len(turn_queue)
 			
 			state = 0
+			game_event.text = 'Select a move'
 		
 	elif state == 3:
 		show_win()
 	
 	elif state == 4:
 		show_lose()
+		
+	elif state == 5:
+		pass
 	
 	prev_state = state
 
 func load_ui(character):
 	'''Loads all information to the UI based on the current to-move character.'''
 		
+	
 	char_name.text = character.entity.name
 	
 	hp_bar.max_value = max(1, character.entity.max_hp)
@@ -126,7 +144,7 @@ func show_selection(action):
 	if action.target <= 1: # if all allies or all enemies
 		var btn_i = 0
 		for chara in characters.get_children():
-			if chara.entity.side != action.target: continue
+			if chara.entity.side != action.target or not chara.entity.alive: continue
 			select_btns.get_child(btn_i).visible = true
 			select_btns.get_child(btn_i).text = chara.entity.name
 			btn_i += 1
@@ -186,10 +204,12 @@ func apply_action():
 	
 	# If will block
 	if qi == ri or selected_action.target == 2:
+		game_event.text = str(turn_queue[qi].entity.name, ' used ', selected_action.name)
 		turn_queue[qi].entity.do_block()
 	
 	# If attacks an individial enemy | on opposite sides
 	elif turn_queue[qi].entity.side ^ turn_queue[ri].entity.side:
+		game_event.text = str(turn_queue[qi].entity.name, ' used ', selected_action.name, ' on ', turn_queue[ri].entity.name)
 		turn_queue[qi].entity.do_attack()
 		turn_queue[ri].entity.take_damage(turn_queue[qi].entity.atk)
 		
@@ -247,7 +267,27 @@ func _on_select_3_toggled(toggled_on: bool) -> void:
 		handle_select_btns(receiver_name)
 
 func show_win() -> void:
-	pass
+	var end_screen = game_over.instantiate()
+	get_parent().add_child(end_screen)
+	end_screen.text_1.text = 'YOU WIN'
+	state = 5 
 
 func show_lose() -> void:
-	pass
+	var end_screen = game_over.instantiate()
+	get_parent().add_child(end_screen)
+	end_screen.text_1.text = 'YOU LOSE'
+	state = 5
+	
+func check_parties():
+	allies = 0
+	enemies = 0
+	for chara in turn_queue:
+		if chara.side == 0 and chara.entity.alive:
+			allies +=1
+		elif chara.side == 1 and chara.entity.alive:
+			enemies +=1
+	if allies == 0:
+		state = 4
+	elif enemies == 0:
+		state = 3
+	

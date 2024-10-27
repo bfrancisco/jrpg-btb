@@ -2,6 +2,7 @@ extends Node2D
 
 var entity: Entity = Entity.new()
 var actions: Array
+var side = 0
 
 func _ready() -> void:
 	#info
@@ -15,7 +16,7 @@ func _ready() -> void:
 	entity.charge = 2
 	entity.max_charge = 3
 	entity.spd = 11
-	entity.atk = 13
+	entity.atk = 500
 	entity.def = 5
 	
 	# Actions
