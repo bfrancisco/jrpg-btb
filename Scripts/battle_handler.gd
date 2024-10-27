@@ -312,9 +312,9 @@ func check_parties():
 	allies = 0
 	enemies = 0
 	for chara in turn_queue:
-		if chara.side == 0 and chara.entity.alive:
+		if chara.entity.side == 0 and chara.entity.alive:
 			allies +=1
-		elif chara.side == 1 and chara.entity.alive:
+		elif chara.entity.side == 1 and chara.entity.alive:
 			enemies +=1
 	if allies == 0:
 		state = 4
