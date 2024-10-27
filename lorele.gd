@@ -13,7 +13,7 @@ func _ready() -> void:
 	entity.hp = 120
 	entity.max_hp = 120
 	entity.charge = 2
-	entity.max_charge = 3
+	entity.max_charge = 2
 	entity.spd = 11
 	entity.atk = 13
 	entity.def = 5

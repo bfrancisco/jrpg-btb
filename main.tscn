@@ -646,7 +646,7 @@ position = Vector2(415, 330)
 scale = Vector2(-1.5, 1.5)
 sprite_frames = SubResource("SpriteFrames_shcxw")
 animation = &"idle"
-frame_progress = 0.256998
+frame_progress = 0.121468
 
 [node name="Lorele" type="Node2D" parent="Entities"]
 script = ExtResource("6_mb37r")
@@ -656,7 +656,7 @@ position = Vector2(277, 330)
 scale = Vector2(-1.5, 1.5)
 sprite_frames = SubResource("SpriteFrames_5a5l0")
 animation = &"idle"
-frame_progress = 0.687458
+frame_progress = 0.80294
 
 [node name="Edward" type="Node2D" parent="Entities"]
 script = ExtResource("8_obrhe")
@@ -666,7 +666,7 @@ position = Vector2(143, 330)
 scale = Vector2(-1.5, 1.5)
 sprite_frames = SubResource("SpriteFrames_orukb")
 animation = &"idle"
-frame_progress = 0.97009
+frame_progress = 0.0855709
 
 [node name="Skeleton" type="Node2D" parent="Entities"]
 script = ExtResource("6_cmjdo")
