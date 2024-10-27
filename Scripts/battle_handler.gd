@@ -105,15 +105,23 @@ func load_ui(character):
 	def_ui.text = "Def: %s" % character.entity.def
 	spd_ui.text = "Spd: %s" % character.entity.spd
 	
+	# Action buttons
 	assert(len(character.actions) <= action_btns.get_child_count())
 	var btn_i = 0
 	for i in range(len(character.actions)):
 		action_btns.get_child(i).visible = true
 		action_btns.get_child(i).text = character.actions[i].name
+		action_btns.get_child(i).disabled = false
+		if character.entity.charge < character.actions[i].charge_cost:
+			action_btns.get_child(i).disabled = true
+		
 		btn_i += 1
 	while btn_i < action_btns.get_child_count():
 		action_btns.get_child(btn_i).visible = false
 		btn_i += 1
+		
+	
+	
 
 ## BUTTON FUNCTIONS 
 
@@ -183,6 +191,9 @@ func apply_action():
 	Applies effects of an action.
 	qi = doer | ri = receiver | selected_action = action
 	'''
+	# update charge
+	turn_queue[qi].entity.update_charge(selected_action.charge_gain)
+	turn_queue[qi].entity.update_charge(-selected_action.charge_cost)
 	
 	# If will block
 	if qi == ri or selected_action.target == 2:

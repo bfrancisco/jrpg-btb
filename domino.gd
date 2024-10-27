@@ -18,6 +18,7 @@ func _ready() -> void:
 	entity.atk = 10
 	entity.def = 3
 	entity.atk_range = 160
+	entity.crit_rate = 20
 	
 	# Actions
 	var atk_action = Action.new()
@@ -45,3 +46,4 @@ func _ready() -> void:
 	actions.push_back(special_action)
 	
 	entity.do_idle()
+	

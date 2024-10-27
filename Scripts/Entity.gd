@@ -14,8 +14,11 @@ var spd: int
 var atk: int
 var def: int
 var atk_range: int = 80
+var crit_rate: int = 10
 
 var is_blocking: bool = false
+
+var rng = RandomNumberGenerator.new()
 
 # Functions
 func do_idle():
@@ -24,6 +27,9 @@ func do_idle():
 
 func take_damage(dmg: int) -> void:
 	var received_dmg = max(1, dmg - def) if is_blocking else dmg
+	if rng.randi_range(1, 100) <= crit_rate:
+		received_dmg *= 2
+		# have some signal here to indicate critical hit
 	hp = max(hp - received_dmg, 0)
 	sprite.play("hurt")
 	
@@ -36,6 +42,9 @@ func do_block():
 	
 func do_attack():
 	sprite.play("attack")
+
+func update_charge(to_add):
+	charge = clamp(charge + to_add, 0, max_charge)
 
 func taken_down() -> void:
 	sprite.play("dead")
