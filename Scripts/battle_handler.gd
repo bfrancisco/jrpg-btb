@@ -86,7 +86,7 @@ func _physics_process(delta: float) -> void:
 	prev_state = state
 
 func load_ui(character):
-	'''Loads all information based on the current to-move character.'''
+	'''Loads all information to the UI based on the current to-move character.'''
 		
 	char_name.text = character.entity.name
 	
@@ -190,7 +190,6 @@ func apply_action():
 		turn_queue[qi].entity.do_attack()
 		turn_queue[ri].entity.take_damage(turn_queue[qi].entity.atk)
 		
-
 func handle_select_btns(receiver_name):
 	'''
 	Executed when a select button is pressed.
