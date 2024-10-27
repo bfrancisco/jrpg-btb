@@ -6,7 +6,7 @@ var actions: Array
 func _ready() -> void:
 	#info
 	entity.name = "Lorele"
-	entity.sprite = $"AnimSprite Lorele"
+	entity.sprite = $"AnimSprite"
 	entity.side = 0
 	
 	#stats

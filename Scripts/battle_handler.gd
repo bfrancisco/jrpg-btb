@@ -74,6 +74,8 @@ func _physics_process(delta: float) -> void:
 			turn_queue[qi].entity.sprite.position = orig_position
 			if not turn_queue[qi].entity.is_blocking:
 				turn_queue[qi].entity.do_idle()
+			if qi != ri:
+				turn_queue[ri].entity.do_idle()
 			qi = (qi + 1) % len(turn_queue)
 			
 			state = 0
@@ -190,6 +192,7 @@ func apply_action():
 	elif turn_queue[qi].entity.side ^ turn_queue[ri].entity.side:
 		turn_queue[qi].entity.do_attack()
 		turn_queue[ri].entity.take_damage(turn_queue[qi].entity.atk)
+		
 		
 func handle_select_btns(receiver_name):
 	'''
