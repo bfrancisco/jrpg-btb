@@ -58,6 +58,10 @@ func update_charge(to_add):
 func taken_down() -> void:
 	alive = false
 	sprite.play("hurt")
+	if side/1 == 1:
+		sprite.rotation_degrees=70
+	else:
+		sprite.rotation_degrees=-70
 	
 func is_dead() -> bool:
 	return (hp == 0)
