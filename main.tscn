@@ -1,4 +1,4 @@
-[gd_scene load_steps=24 format=3 uid="uid://c5rkid51cyum6"]
+[gd_scene load_steps=34 format=3 uid="uid://c5rkid51cyum6"]
 
 [ext_resource type="Texture2D" uid="uid://c46o2m3rlyvva" path="res://Assets/Background.png" id="1_ulpqv"]
 [ext_resource type="Script" path="res://Scripts/battle_handler.gd" id="1_ytr4m"]
@@ -6,7 +6,9 @@
 [ext_resource type="Texture2D" uid="uid://8ftghpba0ts8" path="res://Assets/Domino.png" id="4_4j7x3"]
 [ext_resource type="Script" path="res://domino.gd" id="4_amn8n"]
 [ext_resource type="Script" path="res://skeleton.gd" id="6_cmjdo"]
+[ext_resource type="Script" path="res://lorele.gd" id="6_mb37r"]
 [ext_resource type="Texture2D" uid="uid://o5l1qfvly6gg" path="res://Assets/Skeleton.png" id="6_o6saj"]
+[ext_resource type="Texture2D" uid="uid://bttaybisvrinp" path="res://Assets/Lorele.png" id="7_1netq"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_n5gpe"]
 atlas = ExtResource("4_4j7x3")
@@ -77,6 +79,78 @@ animations = [{
 }, {
 "duration": 1.0,
 "texture": SubResource("AtlasTexture_u16af")
+}],
+"loop": true,
+"name": &"idle",
+"speed": 5.0
+}]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_4ljig"]
+atlas = ExtResource("7_1netq")
+region = Rect2(192, 0, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_rgi1r"]
+atlas = ExtResource("7_1netq")
+region = Rect2(0, 128, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_m54nm"]
+atlas = ExtResource("7_1netq")
+region = Rect2(64, 128, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_r71y2"]
+atlas = ExtResource("7_1netq")
+region = Rect2(128, 128, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_u42mu"]
+atlas = ExtResource("7_1netq")
+region = Rect2(0, 0, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_hr7ai"]
+atlas = ExtResource("7_1netq")
+region = Rect2(64, 0, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_o3wmc"]
+atlas = ExtResource("7_1netq")
+region = Rect2(128, 0, 64, 64)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_5a5l0"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_4ljig")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_rgi1r")
+}],
+"loop": true,
+"name": &"attack",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_m54nm")
+}],
+"loop": true,
+"name": &"block",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_r71y2")
+}],
+"loop": true,
+"name": &"hurt",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_u42mu")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_hr7ai")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_o3wmc")
 }],
 "loop": true,
 "name": &"idle",
@@ -401,7 +475,19 @@ script = ExtResource("4_amn8n")
 position = Vector2(415, 330)
 scale = Vector2(-1.5, 1.5)
 sprite_frames = SubResource("SpriteFrames_shcxw")
-animation = &"block"
+animation = &"attack"
+frame = 1
+frame_progress = 1.0
+
+[node name="Lorele" type="Node2D" parent="Entities"]
+script = ExtResource("6_mb37r")
+
+[node name="AnimSprite Lorele" type="AnimatedSprite2D" parent="Entities/Lorele"]
+position = Vector2(277, 330)
+scale = Vector2(-1.5, 1.5)
+sprite_frames = SubResource("SpriteFrames_5a5l0")
+animation = &"attack"
+speed_scale = 0.25
 
 [node name="Skeleton" type="Node2D" parent="Entities"]
 script = ExtResource("6_cmjdo")
