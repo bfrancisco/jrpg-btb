@@ -44,7 +44,8 @@ func do_attack():
 	sprite.play("attack")
 
 func update_charge(to_add):
-	charge = clamp(charge + to_add, 0, max_charge)
+	assert(charge + to_add >= 0)
+	charge = min(charge + to_add, max_charge)
 
 func taken_down() -> void:
 	sprite.play("dead")

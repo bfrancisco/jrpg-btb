@@ -38,7 +38,7 @@ func _ready() -> void:
 	actions.push_back(block_action)
 	
 	var special_action = Action.new()
-	special_action.name = "Knife Mania"
+	special_action.name = "Blade Dance"
 	special_action.target = 1
 	special_action.charge_cost = 3
 	special_action.charge_gain = 0

@@ -191,18 +191,23 @@ func apply_action():
 	Applies effects of an action.
 	qi = doer | ri = receiver | selected_action = action
 	'''
-	# update charge
-	turn_queue[qi].entity.update_charge(selected_action.charge_gain)
-	turn_queue[qi].entity.update_charge(-selected_action.charge_cost)
-	
 	# If will block
 	if qi == ri or selected_action.target == 2:
 		turn_queue[qi].entity.do_block()
+	
+	elif selected_action.name == "Blade Dance":
+		var hits = turn_queue[qi].entity.rng.randi_range(1, 5)
+		turn_queue[qi].entity.do_special()
+		turn_queue[ri].entity.take_damage(turn_queue[qi].entity.atk * hits)
 	
 	# If attacks an individial enemy | on opposite sides
 	elif turn_queue[qi].entity.side ^ turn_queue[ri].entity.side:
 		turn_queue[qi].entity.do_attack()
 		turn_queue[ri].entity.take_damage(turn_queue[qi].entity.atk)
+		
+	# update charge
+	turn_queue[qi].entity.update_charge(selected_action.charge_gain)
+	turn_queue[qi].entity.update_charge(-selected_action.charge_cost)
 		
 		
 func handle_select_btns(receiver_name):
