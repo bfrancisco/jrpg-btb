@@ -90,9 +90,11 @@ func _physics_process(delta: float) -> void:
 			turn_queue[qi].entity.sprite.position = lerp(turn_queue[qi].entity.sprite.position, orig_position, delta * ANIM_SPD)
 		else:
 			turn_queue[qi].entity.sprite.position = orig_position
+			print(turn_queue[qi].entity.is_blocking)
 			if not turn_queue[qi].entity.is_blocking:
 				turn_queue[qi].entity.do_idle()
-			if qi != ri or not turn_queue[ri].entity.is_stunned:
+				print("Did BLock")
+			if qi != ri and not turn_queue[ri].entity.is_stunned:
 				turn_queue[ri].entity.do_idle()
 			qi = (qi + 1) % len(turn_queue)
 			
