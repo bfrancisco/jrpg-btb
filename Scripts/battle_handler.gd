@@ -3,9 +3,10 @@ extends Node2D
 
 const ALL_ENEMIES_STR = "All Enemies"
 const ALL_ALLIES_STR = "All Allies"
-const ANIM_SPD: float = 6.0
+const ANIM_SPD: float = 8.0
 
 @onready var characters: Node2D = $"../Entities"
+@onready var action_timer: Timer = $"../ActionTimer"
 # UI elements
 @onready var char_name: RichTextLabel = $"../UI/MarginContainer/HBoxContainer/Stats/Char Name"
 @onready var hp_bar: ProgressBar = $"../UI/MarginContainer/HBoxContainer/Stats/HP Bar"
@@ -26,7 +27,8 @@ var debug_state = {
 	2 : "Character going back to their place",
 	3 : "Win",
 	4 : "Lose", 
-	5 : "Game Over"
+	5 : "Game Over",
+	10 : "Action Timer",
 }
 var turn_queue: Array
 var qi: int # index for turn_queue; char to move
@@ -81,7 +83,7 @@ func _physics_process(delta: float) -> void:
 		else:
 			apply_action()
 			turn_queue[qi].entity.sprite.position = target_position
-			state = 2
+			state = 10
 			
 	
 	elif state == 2:
@@ -91,10 +93,8 @@ func _physics_process(delta: float) -> void:
 			turn_queue[qi].entity.sprite.position = lerp(turn_queue[qi].entity.sprite.position, orig_position, delta * ANIM_SPD)
 		else:
 			turn_queue[qi].entity.sprite.position = orig_position
-			print(turn_queue[qi].entity.is_blocking)
 			if not turn_queue[qi].entity.is_blocking:
 				turn_queue[qi].entity.do_idle()
-				print("Did BLock")
 			if qi != ri and not turn_queue[ri].entity.is_stunned:
 				turn_queue[ri].entity.do_idle()
 			qi = (qi + 1) % len(turn_queue)
@@ -110,6 +110,10 @@ func _physics_process(delta: float) -> void:
 		
 	elif state == 5:
 		pass
+	
+	elif state == 10:
+		if action_timer.is_stopped():
+			action_timer.start()
 	
 	prev_state = state
 
@@ -345,3 +349,6 @@ func check_parties():
 		return true
 	return false
 	
+func _on_action_timer_timeout() -> void:
+	action_timer.stop()
+	state = 2

@@ -821,6 +821,9 @@ scale = Vector2(2.74013, 2.47414)
 sprite_frames = SubResource("SpriteFrames_1ceqo")
 animation = &"special"
 
+[node name="ActionTimer" type="Timer" parent="."]
+process_callback = 0
+
 [node name="BattleHandler" type="Node2D" parent="."]
 position = Vector2(576, 237)
 scale = Vector2(1.65781, 1.85156)
@@ -832,3 +835,4 @@ script = ExtResource("1_ytr4m")
 [connection signal="toggled" from="UI/MarginContainer/HBoxContainer/Actions_Enemies/Select/Select Btns/Select 1" to="BattleHandler" method="_on_select_1_toggled"]
 [connection signal="toggled" from="UI/MarginContainer/HBoxContainer/Actions_Enemies/Select/Select Btns/Select 2" to="BattleHandler" method="_on_select_2_toggled"]
 [connection signal="toggled" from="UI/MarginContainer/HBoxContainer/Actions_Enemies/Select/Select Btns/Select 3" to="BattleHandler" method="_on_select_3_toggled"]
+[connection signal="timeout" from="ActionTimer" to="BattleHandler" method="_on_action_timer_timeout"]
