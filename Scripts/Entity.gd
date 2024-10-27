@@ -17,19 +17,24 @@ var def: int
 var is_blocking: bool = false
 
 # Functions
-func go_idle():
+func do_idle():
 	sprite.play("idle")
 	is_blocking = false
 
 func take_damage(dmg: int) -> void:
 	var received_dmg = max(1, dmg - def) if is_blocking else dmg
 	hp = max(hp - received_dmg, 0)
+	sprite.play("hurt")
+	
 	if hp == 0:
 		taken_down()
 
 func do_block():
 	is_blocking = true
 	sprite.play("block")
+	
+func do_attack():
+	sprite.play("attack")
 
 func taken_down() -> void:
 	sprite.play("dead")

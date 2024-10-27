@@ -43,4 +43,4 @@ func _ready() -> void:
 	special_action.description = "Throws multiple knives until exhaustion."
 	actions.push_back(special_action)
 	
-	entity.go_idle()
+	entity.do_idle()

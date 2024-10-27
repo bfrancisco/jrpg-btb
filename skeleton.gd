@@ -31,4 +31,4 @@ func _ready() -> void:
 	block_action.description = "Blocks incoming attack."
 	actions.push_back(block_action)
 	
-	entity.go_idle()
+	entity.do_idle()

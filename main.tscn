@@ -114,7 +114,7 @@ region = Rect2(124, 0, 62, 62)
 [sub_resource type="SpriteFrames" id="SpriteFrames_7804i"]
 animations = [{
 "frames": [{
-"duration": 5.0,
+"duration": 1.0,
 "texture": SubResource("AtlasTexture_o6tur")
 }, {
 "duration": 1.0,
@@ -149,6 +149,9 @@ animations = [{
 }, {
 "duration": 1.0,
 "texture": SubResource("AtlasTexture_sdigw")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_5g3a0")
 }],
 "loop": true,
 "name": &"idle",
@@ -404,10 +407,10 @@ animation = &"block"
 script = ExtResource("6_cmjdo")
 
 [node name="AnimSprite" type="AnimatedSprite2D" parent="Entities/Skeleton"]
-position = Vector2(809, 333)
+position = Vector2(793, 333)
 scale = Vector2(1.5, 1.5)
 sprite_frames = SubResource("SpriteFrames_7804i")
-animation = &"hurt"
+animation = &"attack"
 
 [connection signal="toggled" from="UI/MarginContainer/HBoxContainer/Actions_Enemies/Actions/Action Btns/Action 1" to="BattleHandler" method="_on_action_1_toggled"]
 [connection signal="toggled" from="UI/MarginContainer/HBoxContainer/Actions_Enemies/Actions/Action Btns/Action 2" to="BattleHandler" method="_on_action_2_toggled"]

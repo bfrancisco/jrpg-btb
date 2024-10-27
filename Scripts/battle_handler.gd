@@ -19,10 +19,9 @@ var prev_state: int
 var state: int
 var debug_state = {
 	0 : "Waiting for input",
-	1 : "Ally action",
-	2 : "Enemy action",
-	3 : "Win",
-	4 : "Lose",
+	1 : "Character animation",
+	2 : "Win",
+	3 : "Lose",
 }
 var turn_queue: Array
 var qi: int # pointer/index for turn_queue
@@ -41,18 +40,15 @@ func _ready() -> void:
 func _process(delta: float) -> void:
 	if state == 0:
 		load_ui(turn_queue[qi])
-		# expect "_on_action_#_toggled" to trigger
+		turn_queue[qi].entity.do_idle()
 		
 	elif state == 1:
 		pass
 	
 	elif state == 2:
-		pass
-	
-	elif state == 3:
 		show_win()
 	
-	elif state == 4:
+	elif state == 3:
 		show_lose()
 	
 	prev_state = state
@@ -75,18 +71,16 @@ func load_ui(character):
 	spd_ui.text = "Spd: %s" % character.entity.spd
 	
 	assert(len(character.actions) <= action_btns.get_child_count())
+	var btn_i = 0
 	for i in range(len(character.actions)):
+		action_btns.get_child(i).visible = true
 		action_btns.get_child(i).text = character.actions[i].name
+		btn_i += 1
+	while btn_i < action_btns.get_child_count():
+		action_btns.get_child(btn_i).visible = false
+		btn_i += 1
 
-func handle_action_btns(btn_emitter, btn_index):
-	'''Catcher function when action buttons are pressed.'''
-	for btn in action_btns.get_children():
-		if btn.visible and btn != btn_emitter:
-			btn.button_pressed = false
-		
-	var action = turn_queue[qi].actions[btn_index]
-	selected_action = action
-	show_selection(action)
+## BUTTON FUNCTIONS 
 
 func show_selection(action):
 	'''
@@ -118,6 +112,16 @@ func show_selection(action):
 			select_btns.get_child(btn_i).visible = false
 			btn_i += 1
 
+func handle_action_btns(btn_emitter, btn_index):
+	'''Catcher function when action buttons are pressed.'''
+	for btn in action_btns.get_children():
+		if btn.visible and btn != btn_emitter:
+			btn.button_pressed = false
+		
+	var action = turn_queue[qi].actions[btn_index]
+	selected_action = action
+	show_selection(action)
+
 func _on_action_1_toggled(toggled_on: bool) -> void:
 	if toggled_on:
 		# Hardcoded, refers to Action 1 Button
@@ -139,62 +143,66 @@ func _on_action_3_toggled(toggled_on: bool) -> void:
 		var btn_index = 2
 		handle_action_btns(btn_emitter, btn_index)
 
-func apply_selected_action(receiver_name):
+func apply_action(receiver_i):
+	'''
+	Applies effects of an action.
+	qi = doer | receiver_i = receiver | selected_action = action
+	'''
+	# If will block
+	if qi == receiver_i or selected_action.target == 2:
+		turn_queue[qi].entity.do_block()
+		return
+	
+	
+	# If attacks an individial enemy | on opposite sides
+	if turn_queue[qi].entity.side ^ turn_queue[receiver_i].entity.side:
+		turn_queue[qi].entity.do_attack()
+		turn_queue[receiver_i].entity.take_damage(turn_queue[qi].entity.atk)
+		
+
+func handle_select_btns(receiver_name):
 	'''
 	Executed when a select button is pressed.
 	Increments qi / turn mover function.
 	'''
+	var receiver_i = -1
+	for i in range(len(turn_queue)):
+		if turn_queue[i].entity.name == receiver_name:
+			receiver_i = i
+			break
+	assert(receiver_i != -1)
 	
-	# ally attacking
-	if turn_queue[qi].entity.side == 0:
-		if selected_action.target == 1: # individual enemy
-			for chara in characters.get_children():
-				if chara.entity.side == 1 and chara.entity.name == receiver_name:
-					chara.entity.take_damage(turn_queue[qi].entity.atk)
-					break
-	
-		elif selected_action.target == 2: # block
-			turn_queue[qi].entity.do_block()
-	
-		# TO DO: target == 0 and target == 3
-	
-	# enemy attacking
-	elif turn_queue[qi].entity.side == 1:
-		if selected_action.target == 0: # individual enemy
-			for chara in characters.get_children():
-				if chara.entity.side == 0 and chara.entity.name == receiver_name:
-					chara.entity.take_damage(turn_queue[qi].entity.atk)
-					break
-	
-		elif selected_action.target == 2: # block
-			turn_queue[qi].entity.do_block()
+	apply_action(receiver_i)
 	
 	for btn in action_btns.get_children():
 		btn.button_pressed = false
+		btn.visible = false
 	for btn in select_btns.get_children():
 		btn.button_pressed = false
 		btn.visible = false
 	
 	qi = (qi + 1) % len(turn_queue)
-	
 
 func _on_select_1_toggled(toggled_on: bool) -> void:
 	if toggled_on:
 		var btn_emitter = $"../UI/MarginContainer/HBoxContainer/Actions_Enemies/Select/Select Btns/Select 1"
 		var receiver_name = btn_emitter.text
-		apply_selected_action(receiver_name)
+		handle_select_btns(receiver_name)
 
 func _on_select_2_toggled(toggled_on: bool) -> void:
 	if toggled_on:
 		var btn_emitter = $"../UI/MarginContainer/HBoxContainer/Actions_Enemies/Select/Select Btns/Select 2"
 		var receiver_name = btn_emitter.text
-		apply_selected_action(receiver_name)
+		handle_select_btns(receiver_name)
 
 func _on_select_3_toggled(toggled_on: bool) -> void:
 	if toggled_on:
 		var btn_emitter = $"../UI/MarginContainer/HBoxContainer/Actions_Enemies/Select/Select Btns/Select 3"
 		var receiver_name = btn_emitter.text
-		apply_selected_action(receiver_name)
+		handle_select_btns(receiver_name)
+
+
+
 
 func show_win() -> void:
 	pass
