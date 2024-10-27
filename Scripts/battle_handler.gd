@@ -58,7 +58,8 @@ func _physics_process(delta: float) -> void:
 	
 	#print(state, qi)
 	if state == 0:
-		check_parties()
+		if check_parties():
+			return
 		if not turn_queue[qi].entity.alive:
 			qi = (qi + 1) % len(turn_queue)
 		elif turn_queue[qi].entity.is_stunned:
@@ -327,6 +328,7 @@ func show_lose() -> void:
 	state = 5
 	
 func check_parties():
+	"returns true if there it is a winning/losing state"
 	allies = 0
 	enemies = 0
 	for chara in turn_queue:
@@ -338,4 +340,8 @@ func check_parties():
 		state = 4
 	elif enemies == 0:
 		state = 3
+	
+	if state == 3 or state == 4:
+		return true
+	return false
 	
