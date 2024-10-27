@@ -5,16 +5,16 @@ var actions: Array
 
 func _ready() -> void:
 	# Info
-	entity.name = "Skeleton 1"
+	entity.name = "Skeleton 2"
 	entity.sprite = $AnimSprite
 	entity.side = 1
 	
 	# Stats
 	entity.hp = 120
 	entity.max_hp = 120
-	entity.spd = 10
-	entity.atk = 8
-	entity.def = 4
+	entity.spd = 8
+	entity.atk = 4
+	entity.def = 10
 	
 	# Actions
 	var atk_action = Action.new()
