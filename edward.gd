@@ -5,28 +5,27 @@ var actions: Array
 
 func _ready() -> void:
 	#info
-	entity.name = "Lorele"
+	entity.name = "Edward"
 	entity.sprite = $"AnimSprite"
 	entity.side = 0
 	
 	#stats
-	entity.hp = 120
-	entity.max_hp = 120
-	entity.charge = 2
-	entity.max_charge = 2
-	entity.spd = 11
+	entity.hp = 85
+	entity.max_hp = 85
+	entity.charge = 3
+	entity.max_charge = 6
+	entity.spd = 6
 	entity.atk = 13
-	entity.def = 5
+	entity.def = 3
 	
-	# Actions
 	var atk_action = Action.new()
-	atk_action.name = "Punch"
+	atk_action.name = "Swing"
 	atk_action.target = 1
 	atk_action.charge_cost = 0
 	atk_action.charge_gain = 1
-	atk_action.description = "Punches a target."
+	atk_action.description = "Swings at a target"
 	actions.push_back(atk_action)
-
+	
 	var block_action = Action.new()
 	block_action.name = "Block"
 	block_action.target = 2
@@ -36,11 +35,11 @@ func _ready() -> void:
 	actions.push_back(block_action)
 	
 	var special_action = Action.new()
-	special_action.name = "Sucker Punch"
-	special_action.target = 1
-	special_action.charge_cost = 2
+	special_action.name = "Healing Light"
+	special_action.target = 3
+	special_action.charge_cost = 6
 	special_action.charge_gain = 0
-	special_action.description = "Stuns an enemy."
+	special_action.description = "Heals the party."
 	actions.push_back(special_action)
 	
 	entity.do_idle()

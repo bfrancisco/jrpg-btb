@@ -49,8 +49,14 @@ func _physics_process(delta: float) -> void:
 	#print(state, qi)
 	if state == 0:
 		# TO DO: check if win/lose
-		load_ui(turn_queue[qi])
-		turn_queue[qi].entity.do_idle()
+		if turn_queue[qi].entity.is_stunned:
+			turn_queue[qi].entity.is_stunned = false
+			turn_queue[qi].entity.do_idle()
+			qi = (qi + 1) % len(turn_queue)
+			
+		else:
+			load_ui(turn_queue[qi])
+			turn_queue[qi].entity.do_idle()
 		
 	elif state == 1:
 		var dx = abs(turn_queue[qi].entity.sprite.position.x - target_position.x)
@@ -72,9 +78,11 @@ func _physics_process(delta: float) -> void:
 			turn_queue[qi].entity.sprite.position = lerp(turn_queue[qi].entity.sprite.position, orig_position, delta * ANIM_SPD)
 		else:
 			turn_queue[qi].entity.sprite.position = orig_position
-			if not turn_queue[qi].entity.is_blocking:
+			if not turn_queue[qi].entity.is_blocking and not turn_queue[ri].entity.is_stunned:
+				print("UNANG IF NO GANA")
 				turn_queue[qi].entity.do_idle()
-			if qi != ri:
+			if qi != ri and not turn_queue[ri].entity.is_stunned:
+				print("SECOND IF NO GANA")
 				turn_queue[ri].entity.do_idle()
 			qi = (qi + 1) % len(turn_queue)
 			
@@ -195,6 +203,10 @@ func apply_action():
 	if qi == ri or selected_action.target == 2:
 		turn_queue[qi].entity.do_block()
 	
+	elif selected_action.name == "Sucker Punch":
+		turn_queue[qi].entity.do_attack()
+		turn_queue[ri].entity.get_stunned()
+	
 	elif selected_action.name == "Blade Dance":
 		var hits = turn_queue[qi].entity.rng.randi_range(1, 5)
 		turn_queue[qi].entity.do_special()
@@ -209,7 +221,10 @@ func apply_action():
 	turn_queue[qi].entity.update_charge(selected_action.charge_gain)
 	turn_queue[qi].entity.update_charge(-selected_action.charge_cost)
 		
-		
+	# update charge
+	turn_queue[qi].entity.update_charge(selected_action.charge_gain)
+	turn_queue[qi].entity.update_charge(-selected_action.charge_cost)
+	
 func handle_select_btns(receiver_name):
 	'''
 	Executed when a select button is pressed.

@@ -1,4 +1,4 @@
-[gd_scene load_steps=43 format=3 uid="uid://c5rkid51cyum6"]
+[gd_scene load_steps=56 format=3 uid="uid://c5rkid51cyum6"]
 
 [ext_resource type="Texture2D" uid="uid://c46o2m3rlyvva" path="res://Assets/Background.png" id="1_ulpqv"]
 [ext_resource type="Script" path="res://Scripts/battle_handler.gd" id="1_ytr4m"]
@@ -9,6 +9,8 @@
 [ext_resource type="Script" path="res://lorele.gd" id="6_mb37r"]
 [ext_resource type="Texture2D" uid="uid://o5l1qfvly6gg" path="res://Assets/Skeleton.png" id="6_o6saj"]
 [ext_resource type="Texture2D" uid="uid://bttaybisvrinp" path="res://Assets/Lorele.png" id="7_1netq"]
+[ext_resource type="Script" path="res://edward.gd" id="8_obrhe"]
+[ext_resource type="Texture2D" uid="uid://bxkakbpvuobym" path="res://Assets/Edward.png" id="9_8u6ty"]
 [ext_resource type="Script" path="res://skeleton2.gd" id="10_64nuj"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_n5gpe"]
@@ -143,6 +145,10 @@ region = Rect2(64, 0, 64, 64)
 atlas = ExtResource("7_1netq")
 region = Rect2(128, 0, 64, 64)
 
+[sub_resource type="AtlasTexture" id="AtlasTexture_cj4p8"]
+atlas = ExtResource("7_1netq")
+region = Rect2(64, 0, 64, 64)
+
 [sub_resource type="SpriteFrames" id="SpriteFrames_5a5l0"]
 animations = [{
 "frames": [{
@@ -181,6 +187,100 @@ animations = [{
 }, {
 "duration": 1.0,
 "texture": SubResource("AtlasTexture_o3wmc")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_cj4p8")
+}],
+"loop": true,
+"name": &"idle",
+"speed": 5.0
+}]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_x20pa"]
+atlas = ExtResource("9_8u6ty")
+region = Rect2(448, 0, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_80lq8"]
+atlas = ExtResource("9_8u6ty")
+region = Rect2(256, 128, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_vmhox"]
+atlas = ExtResource("9_8u6ty")
+region = Rect2(320, 128, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_tg1x7"]
+atlas = ExtResource("9_8u6ty")
+region = Rect2(448, 0, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_c17k5"]
+atlas = ExtResource("9_8u6ty")
+region = Rect2(384, 128, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_c0x1r"]
+atlas = ExtResource("9_8u6ty")
+region = Rect2(256, 0, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_l80e4"]
+atlas = ExtResource("9_8u6ty")
+region = Rect2(320, 0, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_2jdnm"]
+atlas = ExtResource("9_8u6ty")
+region = Rect2(384, 0, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_2kj55"]
+atlas = ExtResource("9_8u6ty")
+region = Rect2(320, 0, 64, 64)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_orukb"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_x20pa")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_80lq8")
+}],
+"loop": false,
+"name": &"attack",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_vmhox")
+}],
+"loop": false,
+"name": &"block",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_tg1x7")
+}],
+"loop": true,
+"name": &"cast",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_c17k5")
+}],
+"loop": true,
+"name": &"hurt",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_c0x1r")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_l80e4")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_2jdnm")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_2kj55")
 }],
 "loop": true,
 "name": &"idle",
@@ -583,7 +683,18 @@ script = ExtResource("6_mb37r")
 position = Vector2(277, 330)
 scale = Vector2(-1.5, 1.5)
 sprite_frames = SubResource("SpriteFrames_5a5l0")
-animation = &"hurt"
+animation = &"idle"
+frame_progress = 0.80294
+
+[node name="Edward" type="Node2D" parent="Entities"]
+script = ExtResource("8_obrhe")
+
+[node name="AnimSprite" type="AnimatedSprite2D" parent="Entities/Edward"]
+position = Vector2(143, 330)
+scale = Vector2(-1.5, 1.5)
+sprite_frames = SubResource("SpriteFrames_orukb")
+animation = &"idle"
+frame_progress = 0.0855709
 
 [node name="Skeleton" type="Node2D" parent="Entities"]
 script = ExtResource("6_cmjdo")

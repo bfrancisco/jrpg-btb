@@ -17,6 +17,7 @@ var atk_range: int = 80
 var crit_rate: int = 10
 
 var is_blocking: bool = false
+var is_stunned: bool = false
 
 var rng = RandomNumberGenerator.new()
 
@@ -52,6 +53,10 @@ func taken_down() -> void:
 	
 func is_dead() -> bool:
 	return (hp == 0)
+	
+func get_stunned():
+	is_stunned = true
+	sprite.play("hurt")
 	
 func do_special():
 	sprite.play("special")
