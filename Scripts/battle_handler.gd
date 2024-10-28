@@ -3,7 +3,8 @@ extends Node2D
 
 const ALL_ENEMIES_STR = "All Enemies"
 const ALL_ALLIES_STR = "All Allies"
-const ANIM_SPD: float = 8.0
+const ANIM_SPD: float = 20.0
+const AUTO_BATTLER = false
 var rng = RandomNumberGenerator.new()
 
 @onready var characters: Node2D = $"../Entities"
@@ -54,13 +55,12 @@ func _ready() -> void:
 			allies += 1
 		else:
 			enemies += 1
-			
+	
 
-func _physics_process(delta: float) -> void:
+func _process(delta: float) -> void:
 	if prev_state != state:
 		print(debug_state[state])
 	
-	#print(state, qi)
 	if state == 0:
 		if check_parties():
 			return
@@ -77,7 +77,7 @@ func _physics_process(delta: float) -> void:
 		turn_queue[qi].entity.do_idle()
 		
 		# if enemy, use action prio system
-		if turn_queue[qi].entity.side == 1:
+		if turn_queue[qi].entity.side == 1 or AUTO_BATTLER:
 			# determine prio action
 			var curchar_actions: Array
 			for act in turn_queue[qi].actions:
@@ -137,11 +137,16 @@ func _physics_process(delta: float) -> void:
 			state = 0
 			game_event.text = 'Select a move'
 		
-	elif state == 3:
-		show_win()
-	
-	elif state == 4:
-		show_lose()
+	elif state == 3 or state == 4:
+		if Input.is_action_pressed("reset"):
+			print("RESET")
+			get_parent().get_tree().reload_scene() 
+		if state == 3:
+			show_win()
+		elif state == 4:
+			show_lose()
+		
+		
 		
 	elif state == 5:
 		pass
@@ -376,9 +381,9 @@ func check_parties():
 	allies = 0
 	enemies = 0
 	for chara in turn_queue:
-		if chara.entity.side == 0 and chara.entity.alive:
+		if chara.entity.side == 0 and not chara.entity.is_dead():
 			allies +=1
-		elif chara.entity.side == 1 and chara.entity.alive:
+		elif chara.entity.side == 1 and not chara.entity.is_dead():
 			enemies +=1
 	if allies == 0:
 		state = 4

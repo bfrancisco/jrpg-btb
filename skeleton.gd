@@ -16,7 +16,7 @@ func _ready() -> void:
 	entity.hp = 120
 	entity.max_hp = 120
 	entity.spd = 10
-	entity.atk = 8
+	entity.atk = 20
 	entity.def = 4
 	entity.prio_action = 0
 	

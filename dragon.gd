@@ -18,7 +18,7 @@ func _ready() -> void:
 	entity.charge = 7
 	entity.max_charge = 7
 	entity.spd = 2
-	entity.atk = 23
+	entity.atk = 40
 	entity.def = 9
 	entity.prio_action = 0
 	
