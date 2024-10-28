@@ -96,12 +96,13 @@ func _physics_process(delta: float) -> void:
 			elif selected_action.target == 1 or selected_action.target == 0:
 				var posi_receivers: Array # indeces of pos receivers, in turnqueue
 				for i in range(len(turn_queue)):
-					if turn_queue[i].entity.side != turn_queue[qi].entity.side:
+					if turn_queue[i].entity.side != turn_queue[qi].entity.side and turn_queue[i].entity.alive:
 						posi_receivers.push_back(i)
 				
 				ri = posi_receivers[rng.randi() % len(posi_receivers)]
-			
-			print(qi, " ", ri)
+			else:
+				ri = -1
+				
 			compute_distance()
 			state = 1
 			

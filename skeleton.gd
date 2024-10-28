@@ -18,6 +18,7 @@ func _ready() -> void:
 	entity.spd = 10
 	entity.atk = 8
 	entity.def = 4
+	entity.prio_action = 0
 	
 	healthbar.global_position = entity.sprite.global_position + Vector2(-30, 40)
 	healthbar.max_value = entity.max_hp
