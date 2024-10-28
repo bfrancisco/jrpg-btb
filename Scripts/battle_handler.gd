@@ -4,6 +4,7 @@ extends Node2D
 const ALL_ENEMIES_STR = "All Enemies"
 const ALL_ALLIES_STR = "All Allies"
 const ANIM_SPD: float = 8.0
+var rng = RandomNumberGenerator.new()
 
 @onready var characters: Node2D = $"../Entities"
 @onready var action_timer: Timer = $"../ActionTimer"
@@ -50,9 +51,10 @@ func _ready() -> void:
 	
 	for chara in turn_queue:
 		if chara.entity.side == 0:
-			allies +=1
+			allies += 1
 		else:
-			enemies +=1
+			enemies += 1
+			
 
 func _physics_process(delta: float) -> void:
 	if prev_state != state:
@@ -64,15 +66,47 @@ func _physics_process(delta: float) -> void:
 			return
 		if not turn_queue[qi].entity.alive:
 			qi = (qi + 1) % len(turn_queue)
-		elif turn_queue[qi].entity.is_stunned:
+			return
+		if turn_queue[qi].entity.is_stunned:
 			turn_queue[qi].entity.is_stunned = false
 			turn_queue[qi].entity.do_idle()
 			qi = (qi + 1) % len(turn_queue)
-		else:
-			load_ui(turn_queue[qi])
-			turn_queue[qi].entity.do_idle()
-			
+			return
 		
+		load_ui(turn_queue[qi])
+		turn_queue[qi].entity.do_idle()
+		
+		# if enemy, use action prio system
+		if turn_queue[qi].entity.side == 1:
+			# determine prio action
+			var curchar_actions: Array
+			for act in turn_queue[qi].actions:
+				curchar_actions.push_back(act)
+				
+			for act in curchar_actions:
+				var can_cast = turn_queue[qi].entity.charge >= act.charge_cost
+				act.calculate_prio(characters, turn_queue[qi].entity, turn_queue[qi].entity.prio_action, can_cast)
+				
+			curchar_actions.sort_custom(func(a, b): return a.prio > b.prio)
+			selected_action = curchar_actions[0]
+			print(selected_action.name)
+			# determine receiver
+			if selected_action.target == 2:
+				ri = qi
+			elif selected_action.target == 1 or selected_action.target == 0:
+				var posi_receivers: Array # indeces of pos receivers, in turnqueue
+				for i in range(len(turn_queue)):
+					if turn_queue[i].entity.side != turn_queue[qi].entity.side:
+						posi_receivers.push_back(i)
+				
+				ri = posi_receivers[rng.randi() % len(posi_receivers)]
+			
+			print(qi, " ", ri)
+			compute_distance()
+			state = 1
+			
+			game_event.text = str(turn_queue[qi].entity.name, ' used ', selected_action.name, ' on ', turn_queue[ri].entity.name)
+
 	elif state == 1:
 		var dx = abs(turn_queue[qi].entity.sprite.position.x - target_position.x)
 		var dy = abs(turn_queue[qi].entity.sprite.position.y - target_position.y)
@@ -290,6 +324,12 @@ func handle_select_btns(receiver_name):
 	ri = receiver_i
 	
 	# Compute for orig/target positon for character movement animation
+	compute_distance()
+	
+	state = 1
+
+func compute_distance():
+	# Compute for orig/target positon for character movement animation
 	orig_position = turn_queue[qi].entity.sprite.position
 	if qi == ri or selected_action.target == 2 or ri == -1:
 		target_position = turn_queue[qi].entity.sprite.position
@@ -299,7 +339,6 @@ func handle_select_btns(receiver_name):
 		target_position.x = turn_queue[ri].entity.sprite.position.x + atk_rng * (1 if is_ally else -1)
 		target_position.y = turn_queue[ri].entity.sprite.position.y
 	
-	state = 1
 
 func _on_select_1_toggled(toggled_on: bool) -> void:
 	if toggled_on:

@@ -16,6 +16,7 @@ var atk: int
 var def: int
 var atk_range: int = 80
 var crit_rate: int = 10
+var prio_action: int = 2  # block
 
 var is_blocking: bool = false
 var is_stunned: bool = false
