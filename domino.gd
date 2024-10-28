@@ -21,7 +21,7 @@ func _ready() -> void:
 	entity.atk = 15
 	entity.def = 3
 	entity.atk_range = 160
-	entity.crit_rate = 60
+	entity.crit_rate = 70
 	
 	healthbar.global_position = entity.sprite.global_position + Vector2(-30, 40)
 	healthbar.max_value = entity.max_hp
