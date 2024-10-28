@@ -259,9 +259,9 @@ func apply_action():
 				
 	# If attacks an individial enemy | on opposite sides
 	elif turn_queue[qi].entity.side ^ turn_queue[ri].entity.side:
-		game_event.text = str(turn_queue[qi].entity.name, ' used ', selected_action.name, ' on ', turn_queue[ri].entity.name)
 		turn_queue[qi].entity.do_attack()
 		turn_queue[ri].entity.take_damage(turn_queue[qi].entity.atk)
+		game_event.text = str(turn_queue[qi].entity.name, ' used ', selected_action.name, ' on ', turn_queue[ri].entity.name, turn_queue[ri].entity.effect_text)
 		
 	# update charge
 	turn_queue[qi].entity.update_charge(selected_action.charge_gain)

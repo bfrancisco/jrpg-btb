@@ -769,7 +769,7 @@ texture = ExtResource("1_ulpqv")
 script = ExtResource("6_mb37r")
 
 [node name="AnimSprite" type="AnimatedSprite2D" parent="Entities/Lorele"]
-position = Vector2(466, 331)
+position = Vector2(387, 303.5)
 scale = Vector2(-1.5, 1.5)
 sprite_frames = SubResource("SpriteFrames_5a5l0")
 animation = &"idle"
@@ -797,7 +797,7 @@ vertical_alignment = 1
 script = ExtResource("4_amn8n")
 
 [node name="AnimSprite" type="AnimatedSprite2D" parent="Entities/Domino"]
-position = Vector2(411, 368)
+position = Vector2(332, 340.5)
 scale = Vector2(-1.5, 1.5)
 sprite_frames = SubResource("SpriteFrames_shcxw")
 animation = &"special"
@@ -825,7 +825,7 @@ vertical_alignment = 1
 script = ExtResource("8_obrhe")
 
 [node name="AnimSprite" type="AnimatedSprite2D" parent="Entities/Edward"]
-position = Vector2(345, 324)
+position = Vector2(266, 296.5)
 scale = Vector2(-1.5, 1.5)
 sprite_frames = SubResource("SpriteFrames_orukb")
 animation = &"special"
@@ -853,7 +853,7 @@ vertical_alignment = 1
 script = ExtResource("6_cmjdo")
 
 [node name="AnimSprite" type="AnimatedSprite2D" parent="Entities/Skeleton"]
-position = Vector2(785, 327)
+position = Vector2(706, 299.5)
 scale = Vector2(1.5, 1.5)
 sprite_frames = SubResource("SpriteFrames_7804i")
 animation = &"idle"
@@ -882,7 +882,7 @@ vertical_alignment = 1
 script = ExtResource("10_64nuj")
 
 [node name="AnimSprite" type="AnimatedSprite2D" parent="Entities/Skeleton2"]
-position = Vector2(863, 378)
+position = Vector2(784, 350.5)
 scale = Vector2(1.5, 1.5)
 sprite_frames = SubResource("SpriteFrames_wxhxg")
 animation = &"idle"
@@ -911,7 +911,7 @@ vertical_alignment = 1
 script = ExtResource("12_gax20")
 
 [node name="AnimSprite" type="AnimatedSprite2D" parent="Entities/Dragon"]
-position = Vector2(963.906, 307.25)
+position = Vector2(884.906, 279.75)
 scale = Vector2(2.74013, 2.47414)
 sprite_frames = SubResource("SpriteFrames_1ceqo")
 animation = &"special"
