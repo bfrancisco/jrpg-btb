@@ -3,6 +3,9 @@ extends Node2D
 var entity: Entity = Entity.new()
 var actions: Array
 
+@onready var healthbar = $"HP Bar"
+@onready var hp_label = $"HP Bar/Label"
+
 func _ready() -> void:
 	# Info
 	entity.name = "Domino"
@@ -19,6 +22,11 @@ func _ready() -> void:
 	entity.def = 3
 	entity.atk_range = 160
 	entity.crit_rate = 20
+	
+	healthbar.global_position = entity.sprite.global_position + Vector2(-30, 40)
+	healthbar.max_value = entity.max_hp
+	healthbar.value = entity.hp
+	hp_label.text = "%s/%s" % [entity.hp, entity.max_hp]
 	
 	# Actions
 	var atk_action = Action.new()
@@ -47,3 +55,6 @@ func _ready() -> void:
 	
 	entity.do_idle()
 	
+func _process(delta: float) -> void:
+	healthbar.value = entity.hp
+	hp_label.text = "%s/%s" % [entity.hp, entity.max_hp]
