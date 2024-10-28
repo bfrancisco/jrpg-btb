@@ -13,13 +13,13 @@ func _ready() -> void:
 	entity.side = 0
 	
 	#stats
-	entity.hp = 85
-	entity.max_hp = 85
+	entity.hp = 120
+	entity.max_hp = 120
 	entity.charge = 3
 	entity.max_charge = 6
 	entity.spd = 6
-	entity.atk = 13
-	entity.def = 3
+	entity.atk = 15
+	entity.def = 10
 	
 	healthbar.global_position = entity.sprite.global_position + Vector2(-30, 40)
 	healthbar.max_value = entity.max_hp

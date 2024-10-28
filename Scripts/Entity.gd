@@ -15,7 +15,7 @@ var spd: int
 var atk: int
 var def: int
 var atk_range: int = 80
-var crit_rate: int = 10
+var crit_rate: int = 20
 var prio_action: int = 2  # block
 
 var is_blocking: bool = false
@@ -23,6 +23,8 @@ var is_stunned: bool = false
 
 var rng = RandomNumberGenerator.new()
 var alive: bool = true
+
+var effect_text = ''
 
 # Functions
 func do_idle():
@@ -34,7 +36,7 @@ func take_damage(dmg: int) -> void:
 	var received_dmg = max(1, dmg - def) if is_blocking else dmg
 	if rng.randi_range(1, 100) <= crit_rate:
 		received_dmg *= 2
-		# have some signal here to indicate critical hit
+		effect_text = ', CRITICAL HIT!'
 	hp = max(hp - received_dmg, 0)
 	sprite.play("hurt")
 	
