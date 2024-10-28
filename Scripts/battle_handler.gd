@@ -277,7 +277,7 @@ func apply_action():
 	elif selected_action.name == "Blade Dance":
 		var hits = turn_queue[qi].entity.rng.randi_range(1, 5)
 		turn_queue[qi].entity.do_special()
-		turn_queue[ri].entity.take_damage(turn_queue[qi].entity.atk * hits)
+		turn_queue[ri].entity.take_damage(turn_queue[qi].entity.atk * hits, turn_queue[qi].entity.crit_rate)
 		
 	elif selected_action.name == "Healing Light":
 		turn_queue[qi].entity.do_special()
@@ -289,12 +289,12 @@ func apply_action():
 		turn_queue[qi].entity.do_special()
 		for x in characters.get_children():
 			if x.entity.side == 0 and x.entity.alive:
-				x.entity.take_damage(turn_queue[qi].entity.atk)
+				x.entity.take_damage(turn_queue[qi].entity.atk, turn_queue[qi].entity.crit_rate)
 				
 	# If attacks an individial enemy | on opposite sides
 	elif turn_queue[qi].entity.side ^ turn_queue[ri].entity.side:
 		turn_queue[qi].entity.do_attack()
-		turn_queue[ri].entity.take_damage(turn_queue[qi].entity.atk)
+		turn_queue[ri].entity.take_damage(turn_queue[qi].entity.atk, turn_queue[qi].entity.crit_rate)
 		game_event.text = str(turn_queue[qi].entity.name, ' used ', selected_action.name, ' on ', turn_queue[ri].entity.name, turn_queue[ri].entity.effect_text)
 		
 	# update charge

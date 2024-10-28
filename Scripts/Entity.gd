@@ -32,9 +32,9 @@ func do_idle():
 		sprite.play("idle")
 	is_blocking = false
 
-func take_damage(dmg: int) -> void:
+func take_damage(dmg: int, crit: int) -> void:
 	var received_dmg = max(1, dmg - def) if is_blocking else dmg
-	if rng.randi_range(1, 100) <= crit_rate:
+	if rng.randi_range(1, 100) <= crit:
 		received_dmg *= 2
 		effect_text = ', CRITICAL HIT!'
 	hp = max(hp - received_dmg, 0)
