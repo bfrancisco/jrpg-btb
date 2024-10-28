@@ -774,6 +774,25 @@ scale = Vector2(-1.5, 1.5)
 sprite_frames = SubResource("SpriteFrames_5a5l0")
 animation = &"idle"
 
+[node name="HP Bar" type="ProgressBar" parent="Entities/Lorele"]
+custom_minimum_size = Vector2(75, 15)
+step = 1.0
+value = 100.0
+show_percentage = false
+
+[node name="Label" type="Label" parent="Entities/Lorele/HP Bar"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_fonts/font = ExtResource("2_t1lv0")
+theme_override_font_sizes/font_size = 20
+text = "100/100"
+horizontal_alignment = 1
+vertical_alignment = 1
+
 [node name="Domino" type="Node2D" parent="Entities"]
 script = ExtResource("4_amn8n")
 
@@ -783,6 +802,25 @@ scale = Vector2(-1.5, 1.5)
 sprite_frames = SubResource("SpriteFrames_shcxw")
 animation = &"special"
 
+[node name="HP Bar" type="ProgressBar" parent="Entities/Domino"]
+custom_minimum_size = Vector2(75, 15)
+step = 1.0
+value = 100.0
+show_percentage = false
+
+[node name="Label" type="Label" parent="Entities/Domino/HP Bar"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_fonts/font = ExtResource("2_t1lv0")
+theme_override_font_sizes/font_size = 20
+text = "100/100"
+horizontal_alignment = 1
+vertical_alignment = 1
+
 [node name="Edward" type="Node2D" parent="Entities"]
 script = ExtResource("8_obrhe")
 
@@ -791,6 +829,25 @@ position = Vector2(345, 324)
 scale = Vector2(-1.5, 1.5)
 sprite_frames = SubResource("SpriteFrames_orukb")
 animation = &"special"
+
+[node name="HP Bar" type="ProgressBar" parent="Entities/Edward"]
+custom_minimum_size = Vector2(75, 15)
+step = 1.0
+value = 100.0
+show_percentage = false
+
+[node name="Label" type="Label" parent="Entities/Edward/HP Bar"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_fonts/font = ExtResource("2_t1lv0")
+theme_override_font_sizes/font_size = 20
+text = "100/100"
+horizontal_alignment = 1
+vertical_alignment = 1
 
 [node name="Skeleton" type="Node2D" parent="Entities"]
 script = ExtResource("6_cmjdo")
@@ -802,6 +859,25 @@ sprite_frames = SubResource("SpriteFrames_7804i")
 animation = &"idle"
 frame_progress = 0.0875807
 
+[node name="HP Bar" type="ProgressBar" parent="Entities/Skeleton"]
+custom_minimum_size = Vector2(75, 15)
+step = 1.0
+value = 100.0
+show_percentage = false
+
+[node name="Label" type="Label" parent="Entities/Skeleton/HP Bar"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_fonts/font = ExtResource("2_t1lv0")
+theme_override_font_sizes/font_size = 20
+text = "100/100"
+horizontal_alignment = 1
+vertical_alignment = 1
+
 [node name="Skeleton2" type="Node2D" parent="Entities"]
 script = ExtResource("10_64nuj")
 
@@ -812,6 +888,25 @@ sprite_frames = SubResource("SpriteFrames_wxhxg")
 animation = &"idle"
 frame_progress = 0.533257
 
+[node name="HP Bar" type="ProgressBar" parent="Entities/Skeleton2"]
+custom_minimum_size = Vector2(75, 15)
+step = 1.0
+value = 100.0
+show_percentage = false
+
+[node name="Label" type="Label" parent="Entities/Skeleton2/HP Bar"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_fonts/font = ExtResource("2_t1lv0")
+theme_override_font_sizes/font_size = 20
+text = "100/100"
+horizontal_alignment = 1
+vertical_alignment = 1
+
 [node name="Dragon" type="Node2D" parent="Entities"]
 script = ExtResource("12_gax20")
 
@@ -820,6 +915,25 @@ position = Vector2(963.906, 307.25)
 scale = Vector2(2.74013, 2.47414)
 sprite_frames = SubResource("SpriteFrames_1ceqo")
 animation = &"special"
+
+[node name="HP Bar" type="ProgressBar" parent="Entities/Dragon"]
+custom_minimum_size = Vector2(75, 15)
+step = 1.0
+value = 100.0
+show_percentage = false
+
+[node name="Label" type="Label" parent="Entities/Dragon/HP Bar"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_fonts/font = ExtResource("2_t1lv0")
+theme_override_font_sizes/font_size = 20
+text = "100/100"
+horizontal_alignment = 1
+vertical_alignment = 1
 
 [node name="ActionTimer" type="Timer" parent="."]
 process_callback = 0
